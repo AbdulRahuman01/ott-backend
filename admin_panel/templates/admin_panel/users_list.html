@@ -1,0 +1,48 @@
+{% extends "admin_panel/base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">User Management</h2>
+
+    <table class="table table-bordered table-dark table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th width="250px">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for u in users %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.name }}</td>
+                <td>{{ u.email }}</td>
+
+                <td>
+                    {% if u.is_active %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-danger">Blocked</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if u.is_active %}
+                        <a href="{% url 'block_user' u.id %}" class="btn btn-danger btn-sm">Block</a>
+                    {% else %}
+                        <a href="{% url 'unblock_user' u.id %}" class="btn btn-success btn-sm">Unblock</a>
+                    {% endif %}
+
+                    <a href="{% url 'user_activity' u.id %}" class="btn btn-info btn-sm">Activity</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

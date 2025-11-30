@@ -1,0 +1,51 @@
+{% extends "admin_panel/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="card bg-primary text-white p-3 shadow">
+                <h4>Total Movies</h4>
+                <h2>{{ total_movies }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white p-3 shadow">
+                <h4>Total Users</h4>
+                <h2>{{ total_users }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark p-3 shadow">
+                <h4>Watchlist Items</h4>
+                <h2>{{ total_watchlist }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-danger text-white p-3 shadow">
+                <h4>History Records</h4>
+                <h2>{{ total_history }}</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-4">
+
+    <div class="d-flex gap-3">
+        <a href="/admin-panel/movies/" class="btn btn-dark btn-lg">Manage Movies</a>
+        <a href="/admin-panel/movies/add/" class="btn btn-success btn-lg">Add Movie</a>
+        <a href="/admin-panel/users" class="btn btn-success btn-lg">Manage Users</a>
+        <a href="/admin-panel/reports/" class="btn btn-info btn-lg text-white">View Reports</a>
+
+    </div>
+
+</div>
+{% endblock %}

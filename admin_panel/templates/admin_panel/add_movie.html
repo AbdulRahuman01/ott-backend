@@ -1,0 +1,84 @@
+{% extends "admin_panel/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Add Movie</h2>
+    <hr>
+
+    <form method="POST" enctype="multipart/form-data" class="mt-4 shadow p-4 rounded bg-white">
+        {% csrf_token %}
+
+        <div class="row">
+            
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Year</label>
+                <input type="number" name="year" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Duration</label>
+                <input type="text" name="duration" class="form-control" placeholder="2h 30m" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Rating</label>
+                <input type="text" name="rating" class="form-control" placeholder="U/A 13+" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Poster (URL)</label>
+                <input type="url" name="poster" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Backdrop (URL)</label>
+                <input type="url" name="backdrop" class="form-control" required>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Description</label>
+                <textarea name="description" rows="3" class="form-control" required></textarea>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Genre (comma separated)</label>
+                <input type="text" name="genre" class="form-control" placeholder="Action, Thriller">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Languages (comma separated)</label>
+                <input type="text" name="languages" class="form-control" placeholder="English, Malayalam">
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Upload Video File</label>
+                <input type="file" name="video_file" class="form-control">
+            </div>
+
+        </div>
+
+        <h5 class="mt-4">Categories</h5>
+        <div class="d-flex gap-4 flex-wrap mt-2">
+
+            <label><input type="checkbox" name="is_featured"> Featured</label>
+            <label><input type="checkbox" name="is_trending"> Trending</label>
+            <label><input type="checkbox" name="is_action"> Action</label>
+            <label><input type="checkbox" name="is_malayalam"> Malayalam</label>
+            <label><input type="checkbox" name="is_scifi"> Sci-Fi</label>
+            <label><input type="checkbox" name="is_comedy"> Comedy</label>
+
+        </div>
+
+        <button class="btn btn-primary mt-4">Add Movie</button>
+        <a href="/admin-panel/movies/" class="btn btn-secondary mt-4 ms-2">Cancel</a>
+
+    </form>
+
+</div>
+{% endblock %}

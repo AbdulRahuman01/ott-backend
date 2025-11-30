@@ -1,0 +1,130 @@
+{% extends "admin_panel/base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <!-- PAGE TITLE -->
+    <h1 class="fw-bold mb-5 display-6">
+        📊 Analytics & Reports
+    </h1>
+
+    <!-- SUMMARY CARDS -->
+    
+    <!-- MAIN REPORTS GRID -->
+    <div class="row g-5">
+
+        <!-- MOST WATCHED MOVIES -->
+        <div class="col-lg-6">
+            <div class="card p-4">
+                <h4 class="fw-bold mb-4">🎬 Most Watched Movies</h4>
+
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th style="width:70px;">#</th>
+                            <th>Movie</th>
+                            <th class="text-center" style="width:150px;">Watch Count</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for m in top_movies %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ m.title }}</td>
+                                <td class="text-center fw-bold text-primary">{{ m.watch_count }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    No data available 😢
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- MOST ACTIVE USERS -->
+        <div class="col-lg-6">
+            <div class="card p-4">
+                <h4 class="fw-bold mb-4">🧑‍💻 Most Active Users</h4>
+
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th style="width:70px;">#</th>
+                            <th>Email</th>
+                            <th class="text-center" style="width:160px;">Movies Watched</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for u in top_users %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ u.email }}</td>
+                                <td class="text-center fw-bold text-success">{{ u.watch_count }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    No users found 😢
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- MOST WATCHLISTED MOVIES (FULL WIDTH) -->
+        <div class="col-12">
+            <div class="card p-4">
+                <h4 class="fw-bold mb-4">⭐ Most Watchlisted Movies</h4>
+
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th style="width:70px;">#</th>
+                            <th>Movie</th>
+                            <th class="text-center" style="width:160px;">Watchlist Count</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for m in most_watchlisted %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ m.title }}</td>
+                                <td class="text-center fw-bold text-warning">{{ m.watchlist_count }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    No watchlist data 😢
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

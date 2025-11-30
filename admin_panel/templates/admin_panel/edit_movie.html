@@ -1,0 +1,95 @@
+{% extends "admin_panel/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Edit Movie</h2>
+    <hr>
+
+    <form method="POST" enctype="multipart/form-data" class="mt-4 shadow p-4 rounded bg-white">
+        {% csrf_token %}
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" name="title" value="{{ movie.title }}" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Year</label>
+                <input type="number" name="year" value="{{ movie.year }}" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Duration</label>
+                <input type="text" name="duration" value="{{ movie.duration }}" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Rating</label>
+                <input type="text" name="rating" value="{{ movie.rating }}" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Poster (URL)</label>
+                <input type="url" name="poster" value="{{ movie.poster }}" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Backdrop (URL)</label>
+                <input type="url" name="backdrop" value="{{ movie.backdrop }}" class="form-control">
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Description</label>
+                <textarea name="description" rows="3" class="form-control">{{ movie.description }}</textarea>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Genre</label>
+                <input type="text" name="genre" value="{{ movie.genre }}" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Languages</label>
+                <input type="text" name="languages" value="{{ movie.languages }}" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Current Video</label> <br>
+                {% if movie.video_file %}
+                    <video width="200" controls>
+                        <source src="{{ movie.video_file.url }}" type="video/mp4">
+                    </video>
+                {% else %}
+                    <p class="text-muted">No video uploaded</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Upload New Video</label>
+                <input type="file" name="video_file" class="form-control">
+            </div>
+
+        </div>
+
+        <h5 class="mt-4">Categories</h5>
+        <div class="d-flex gap-4 flex-wrap mt-2">
+
+            <label><input type="checkbox" name="is_featured" {% if movie.is_featured %}checked{% endif %}> Featured</label>
+            <label><input type="checkbox" name="is_trending" {% if movie.is_trending %}checked{% endif %}> Trending</label>
+            <label><input type="checkbox" name="is_action" {% if movie.is_action %}checked{% endif %}> Action</label>
+            <label><input type="checkbox" name="is_malayalam" {% if movie.is_malayalam %}checked{% endif %}> Malayalam</label>
+            <label><input type="checkbox" name="is_scifi" {% if movie.is_scifi %}checked{% endif %}> Sci-Fi</label>
+            <label><input type="checkbox" name="is_comedy" {% if movie.is_comedy %}checked{% endif %}> Comedy</label>
+
+        </div>
+
+        <button class="btn btn-primary mt-4">Save Changes</button>
+        <a href="/admin-panel/movies/" class="btn btn-secondary mt-4 ms-2">Cancel</a>
+
+    </form>
+
+</div>
+{% endblock %}

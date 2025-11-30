@@ -1,0 +1,59 @@
+{% extends "admin_panel/base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>User Activity – {{ user.name }}</h2>
+    <p>Email: {{ user.email }}</p>
+    <p>Status:
+        {% if user.is_active %}
+            <span class="badge bg-success">Active</span>
+        {% else %}
+            <span class="badge bg-danger">Blocked</span>
+        {% endif %}
+    </p>
+
+    <hr>
+
+    <h4>Watchlist</h4>
+    {% if watchlist %}
+        <div class="row">
+        {% for item in watchlist %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <img src="{{ item.movie.poster }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.movie.title }}</h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No watchlist items</p>
+    {% endif %}
+
+    <hr>
+
+    <h4>History</h4>
+    {% if history %}
+        <div class="row">
+        {% for item in history %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <img src="{{ item.movie.poster }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.movie.title }}</h5>
+                        <small class="text-muted">{{ item.watched_at }}</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No history items</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
