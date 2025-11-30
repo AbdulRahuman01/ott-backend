@@ -62,6 +62,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ott_platform.urls'
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -159,7 +162,12 @@ CORS_ALLOW_HEADERS = [
 ]
 
 #ALLOWED_HOSTS = ["*"]
-ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1"]
+#ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "ott-backend-8dzo.onrender.com",
+]
 
 
 import os
