@@ -181,3 +181,5 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+PORT = os.environ.get("PORT", 8000)
