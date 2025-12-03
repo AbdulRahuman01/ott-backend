@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-k3d0#dh-dzk^f00!-^@a=hp+bg3l=*7s4*gg1+*v9+^!v(p4##
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "ott-backend-original.onrender.com",
+]
 
 
 # Application definition
@@ -173,24 +177,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-
-
-
-
-
-
-
-
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-
-
-
-
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-
-
