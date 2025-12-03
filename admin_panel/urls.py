@@ -23,4 +23,11 @@ urlpatterns = [
 
     # REPORTS
     path("reports/", views.reports_dashboard, name="reports_dashboard"),
+
+    #subscription reports
+    path("plans/", views.plan_list, name="admin_plans"),
+    path("plans/add/", views.add_plan, name="admin_add_plan"),
+    path("plans/edit/<int:id>/", views.edit_plan, name="admin_edit_plan"),
+    path("plans/delete/<int:id>/", views.delete_plan, name="admin_delete_plan"),
+    
 ]

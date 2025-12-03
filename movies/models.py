@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 class Movie(models.Model):
     
@@ -13,18 +12,14 @@ class Movie(models.Model):
     backdrop = models.URLField()   
     genre = models.CharField(max_length=200)        
     languages = models.CharField(max_length=200)        
-    video_file = models.FileField(
-    storage=RawMediaCloudinaryStorage(),
-    null=True,
-    blank=True
-)
-    # video_file = models.FileField(upload_to='videos/', null=True, blank=True)    
+    video_file = models.FileField(upload_to='videos/', null=True, blank=True)    
     is_featured = models.BooleanField(default=False)
     is_trending = models.BooleanField(default=False)
     is_action = models.BooleanField(default=False)
     is_malayalam = models.BooleanField(default=False)
     is_scifi = models.BooleanField(default=False)
-    is_comedy = models.BooleanField(default=False)   
+    is_comedy = models.BooleanField(default=False)
+    is_premium = models.BooleanField(default=False)   
     created_at = models.DateTimeField(auto_now_add=True)   
     updated_at = models.DateTimeField(auto_now=True)       
 

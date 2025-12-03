@@ -4,9 +4,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from users.models import User   # your custom user
 from movies.models import Movie
-from users.models import Watchlist, history
+from users.models import Watchlist, history 
 from django.db.models import Count
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+from users.models import SubscriptionPlan
+from django.contrib import messages
 
 def admin_login(request):
     if request.method == "POST":
@@ -95,6 +98,7 @@ def add_movie(request):
         is_malayalam = request.POST.get("is_malayalam") == "on"
         is_scifi = request.POST.get("is_scifi") == "on"
         is_comedy = request.POST.get("is_comedy") == "on"
+        is_premium = request.POST.get("is_premium") == "on"
 
         Movie.objects.create(
             title=title,
@@ -113,6 +117,7 @@ def add_movie(request):
             is_malayalam=is_malayalam,
             is_scifi=is_scifi,
             is_comedy=is_comedy,
+            is_premium=is_premium,
         )
 
         messages.success(request, "Movie added successfully!")
@@ -152,6 +157,7 @@ def edit_movie(request, id):
         movie.is_malayalam = request.POST.get("is_malayalam") == "on"
         movie.is_scifi = request.POST.get("is_scifi") == "on"
         movie.is_comedy = request.POST.get("is_comedy") == "on"
+        movie.is_premium = request.POST.get("is_premium") == "on"
 
         movie.save()
 
@@ -230,3 +236,48 @@ def reports_dashboard(request):
     }
 
     return render(request, "admin_panel/reports.html", context)
+
+@login_required
+def plan_list(request):
+    plans=SubscriptionPlan.objects.all()
+    return render(request,"admin_panel/plan_list.html",{"plans":plans})
+
+@login_required
+def add_plan(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        duration = request.POST.get("duration")
+
+        SubscriptionPlan.objects.create(
+            name=name,
+            price=price,
+            duration_days=duration
+        )
+
+        messages.success(request, "Plan added successfully!")
+        return redirect("admin_plans")
+
+    return render(request, "admin_panel/add_plan.html")
+
+@login_required
+def edit_plan(request, id):
+    plan = SubscriptionPlan.objects.get(id=id)
+
+    if request.method == "POST":
+        plan.name = request.POST.get("name")
+        plan.price = request.POST.get("price")
+        plan.duration_days = request.POST.get("duration")
+        plan.save()
+
+        messages.success(request, "Plan updated successfully!")
+        return redirect("admin_plans")
+
+    return render(request, "admin_panel/edit_plan.html", {"plan": plan})
+
+@login_required
+def delete_plan(request, id):
+    plan = SubscriptionPlan.objects.get(id=id)
+    plan.delete()
+    messages.success(request, "Plan deleted successfully!")
+    return redirect("admin_plans")

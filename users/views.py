@@ -9,10 +9,13 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 from django.http import JsonResponse
-from users.models import User, Watchlist, history
+from users.models import User, Watchlist, history, SubscriptionPlan, UserSubscription, Notification
 from movies.models import Movie
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
+from datetime import timedelta
+from django.utils import timezone
+
 
 
 @api_view(['POST'])
@@ -47,6 +50,27 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key},status=HTTP_200_OK)
 
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def google_login(request):
+    email = request.data.get("email")
+    name = request.data.get("name")
+
+    if not email:
+        return JsonResponse({"error": "Email required"}, status=400)
+
+    # Check if user exists
+    user, created = User.objects.get_or_create(
+        email=email,
+        defaults={"name": name}
+    )
+
+    # Create token
+    token, _ = Token.objects.get_or_create(user=user)
+
+    return JsonResponse({"token": token.key})
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_to_watchlist(request):
@@ -72,7 +96,7 @@ def add_to_watchlist(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_watchlist(request):
-    user = request.user  # 👈 TOKEN → USER
+    user = request.user  # 👈 TOKEN
 
     watchlist_items = Watchlist.objects.filter(user=user).select_related('movie')
 
@@ -195,4 +219,104 @@ def change_password(request):
     user.set_password(new_password)
     user.save()
 
+    
+
     return JsonResponse({'message': 'Password changed successfully'}, status=200)
+
+
+def get_plans(request):
+    plans = SubscriptionPlan.objects.all()
+    data = []
+    for p in plans:
+        data.append({
+            "id": p.id,
+            "name": p.name,
+            "price": p.price,
+            "duration": p.duration_days,
+        })
+    return JsonResponse(data, safe=False)
+
+
+@api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def subscribe(request):
+    plan_id = request.data.get("plan_id")
+
+    if not plan_id:
+        return JsonResponse({"error": "Plan ID required"}, status=400)
+
+    try:
+        plan = SubscriptionPlan.objects.get(id=plan_id)
+    except SubscriptionPlan.DoesNotExist:
+        return JsonResponse({"error": "Plan not found"}, status=404)
+
+    end_date = timezone.now() + timedelta(days=plan.duration_days)
+
+    sub, created = UserSubscription.objects.update_or_create(
+        user=request.user,
+        defaults={
+            "plan": plan,
+            "start_date": timezone.now(),
+            "end_date": end_date,
+            "is_active": True,
+        }
+    )
+    notify(request.user, f"You have successfully subscribed to the {plan.name} plan! Your subscription is active until {end_date.strftime('%Y-%m-%d')}.")
+
+    return JsonResponse({
+        "success": True,
+        "message": f"Subscribed to {plan.name}",
+        "plan": plan.name,
+        "expires": end_date,
+    })
+
+@api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_subscription_status(request):
+
+    try:
+        sub = request.user.subscription
+    except UserSubscription.DoesNotExist:
+        return JsonResponse({"status": "none"})
+
+    # Auto-expire
+    if sub.end_date < timezone.now():
+        sub.is_active = False
+        sub.save()
+
+    return JsonResponse({
+        "status": "active" if sub.is_active else "expired",
+        "plan": sub.plan.name,
+        "expires": sub.end_date,
+    })
+
+
+def notify(user, msg):
+    Notification.objects.create(user=user, message=msg)
+
+
+
+@api_view(["GET"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_notifications(request):
+    notes = Notification.objects.filter(user=request.user).order_by("-created_at")
+    data = [
+        {
+            "id": n.id,
+            "message": n.message,
+            "is_read": n.is_read,
+            "created_at": n.created_at.strftime("%Y-%m-%d %H:%M")
+        }
+        for n in notes
+    ]
+    return JsonResponse(data, safe=False)
+
+@api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def mark_notifications_read(request):
+    Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+    return JsonResponse({"message": "All notifications marked as read"})

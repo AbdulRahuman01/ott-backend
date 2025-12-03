@@ -1,0 +1,30 @@
+{% extends "admin_panel/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <h2 class="mb-4">Edit Subscription Plan</h2>
+
+  <form method="POST">
+      {% csrf_token %}
+
+      <div class="mb-3">
+          <label class="form-label">Plan Name</label>
+          <input type="text" name="name" value="{{ plan.name }}" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label">Price (₹)</label>
+          <input type="number" name="price" value="{{ plan.price }}" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label">Duration (Days)</label>
+          <input type="number" name="duration" value="{{ plan.duration_days }}" class="form-control" required>
+      </div>
+
+      <button class="btn btn-primary">Update Plan</button>
+  </form>
+
+</div>
+{% endblock %}

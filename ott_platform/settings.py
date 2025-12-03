@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-k3d0#dh-dzk^f00!-^@a=hp+bg3l=*7s4*gg1+*v9+^!v(p4##'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 #ALLOWED_HOSTS = []
 
@@ -45,8 +45,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'admin_panel',
-    'cloudinary',
-    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -62,8 +60,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'ott_platform.urls'
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 
 TEMPLATES = [
@@ -87,10 +83,8 @@ WSGI_APPLICATION = 'ott_platform.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-IS_RENDER = "RENDER" in os.environ
-
-if IS_RENDER:
-    # Production → SQLite
+if os.environ.get("RENDER") == "true":
+    # 👉 On Render (production) – use SQLite
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -98,15 +92,15 @@ if IS_RENDER:
         }
     }
 else:
-    # Local development → MySQL
+    # 👉 On your laptop – keep using MySQL
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'ott_platform',
-            'USER': 'root',
-            'PASSWORD': '',
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "ott_platform",
+            "USER": "root",
+            "PASSWORD": "",  # keep your current local password
+            "HOST": "127.0.0.1",
+            "PORT": "3306",
         }
     }
 
@@ -166,42 +160,37 @@ AUTH_USER_MODEL = 'users.User'
 
 
 
+CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_HEADERS = [
-    "*",
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    
 ]
 
-#ALLOWED_HOSTS = ["*"]
-#ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1"]
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "ott-backend-8dzo.onrender.com",
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    
 ]
+
+
+
+
+
+
+
 
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-#STATIC_URL = '/static/'
-#STATIC_ROOT = BASE_DIR / 'staticfiles'
-#MEDIA_URL = '/media/'
+
+
+
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": "dozcsey1h",
-    "API_KEY": "218822642481134",
-    "API_SECRET": "**********",
-}
 
-#DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-#STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+

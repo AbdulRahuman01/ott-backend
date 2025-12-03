@@ -1,0 +1,40 @@
+{% extends "admin_panel/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between">
+        <h2>Subscription Plans</h2>
+        <a href="/admin-panel/plans/add/" class="btn btn-success">+ Add Plan</a>
+    </div>
+
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price (₹)</th>
+                <th>Duration (days)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in plans %}
+            <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.price }}</td>
+                <td>{{ p.duration_days }}</td>
+                <td>
+                    <a href="/admin-panel/plans/edit/{{ p.id }}/" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="/admin-panel/plans/delete/{{ p.id }}/" 
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this plan?');">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

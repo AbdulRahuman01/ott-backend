@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models 
 from django.conf import settings
 from movies.models import Movie
+from datetime import timedelta
+from django.utils import timezone
 
 class UserManager(BaseUserManager): 
       def create_user(self, email, password=None): 
@@ -47,3 +49,39 @@ class history(models.Model):
 def __str__(self):
          return f"{self.user.email} watched {self.movie.title}"
 
+
+class SubscriptionPlan(models.Model):
+    name = models.CharField(max_length=50)
+    price = models.IntegerField()  # fake price
+    duration_days = models.IntegerField(default=30)
+
+    def __str__(self):
+        return self.name
+
+
+class UserSubscription(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="subscription"
+    )
+    plan = models.ForeignKey(SubscriptionPlan, on_delete=models.SET_NULL, null=True)
+    start_date = models.DateTimeField(auto_now_add=True)
+    end_date = models.DateTimeField(null=True)
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.email} → {self.plan.name if self.plan else 'No Plan'}"
+
+class Notification(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="notifications"
+    )
+    message = models.CharField(max_length=255)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.message}"

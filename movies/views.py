@@ -33,6 +33,7 @@ def movie_list(request):
             "is_comedy": mv.is_comedy,
             "is_malayalam": mv.is_malayalam,
             "is_scifi": mv.is_scifi,
+            "is_premium": mv.is_premium,
         })
 
     return JsonResponse(movie_data, safe=False)
@@ -56,8 +57,8 @@ def movie_detail(request, id):
         "genre": movie.genre,
         "languages": movie.languages,
         # MAIN PART: Return video file full URL
-        # "video_url": request.build_absolute_uri(movie.video_file.url) if movie.video_file else None,
-        "video_url": movie.video_file.url if movie.video_file else None,
+        "video_url": request.build_absolute_uri(movie.video_file.url) if movie.video_file else None,
+        "is_premium": movie.is_premium,
     }
 
     return JsonResponse(data, status=200)
