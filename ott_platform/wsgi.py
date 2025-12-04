@@ -23,8 +23,9 @@ if os.environ.get("RENDER") == "true":
     admin_password = "Admin@123"
 
     if not User.objects.filter(email=admin_email).exists():
-        User.objects.create_superuser(
+        user = User.objects.create_superuser(
             email=admin_email,
-            password=admin_password,
-            name="Admin"
+            password=admin_password
         )
+        user.name = "Admin"   # 🔥 set name AFTER creation
+        user.save()
