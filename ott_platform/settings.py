@@ -168,11 +168,14 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://cute-kashata-15e8bd.netlify.app",
     
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    "https://ott-backend-original.onrender.com",
+    "https://cute-kashata-15e8bd.netlify.app",
     
 ]
 
