@@ -90,7 +90,8 @@ def add_movie(request):
         genre = request.POST.get("genre")
         languages = request.POST.get("languages")
 
-        video_file = request.FILES.get("video_file")
+        # video_file = request.FILES.get("video_file")
+        video_url = request.POST.get("video_url"),
 
         is_featured = request.POST.get("is_featured") == "on"
         is_trending = request.POST.get("is_trending") == "on"
@@ -110,7 +111,7 @@ def add_movie(request):
             backdrop=backdrop,
             genre=genre,
             languages=languages,
-            video_file=video_file,
+            video_url=video_url,
             is_featured=is_featured,
             is_trending=is_trending,
             is_action=is_action,
@@ -148,8 +149,9 @@ def edit_movie(request, id):
         movie.genre = request.POST.get("genre")
         movie.languages = request.POST.get("languages")
 
-        if request.FILES.get("video_file"):
-            movie.video_file = request.FILES.get("video_file")
+        # if request.FILES.get("video_file"):
+        #     movie.video_file = request.FILES.get("video_file")
+        movie.video_url = request.POST.get("video_url")
 
         movie.is_featured = request.POST.get("is_featured") == "on"
         movie.is_trending = request.POST.get("is_trending") == "on"
