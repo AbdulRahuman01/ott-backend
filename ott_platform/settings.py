@@ -172,7 +172,8 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://prismatic-cocada-8d3583.netlify.app",
+     "https://ottmovieflix.netlify.app",
+    
     
     
 ]
@@ -180,7 +181,7 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "https://ott-backend-original.onrender.com",
-    "https://prismatic-cocada-8d3583.netlify.app",
+     "https://ottmovieflix.netlify.app",
     
     
 ]
