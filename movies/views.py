@@ -26,7 +26,8 @@ def movie_list(request):
             "backdrop": mv.backdrop,
             "genre": mv.genre,
             "languages": mv.languages,
-            "video_url": request.build_absolute_uri(mv.video_file.url) if mv.video_file else None,
+            # "video_url": request.build_absolute_uri(mv.video_file.url) if mv.video_file else None,
+            "video_url": mv.video_url,
             "is_featured": mv.is_featured,
             "is_trending": mv.is_trending,
             "is_action": mv.is_action,
@@ -57,7 +58,8 @@ def movie_detail(request, id):
         "genre": movie.genre,
         "languages": movie.languages,
         # MAIN PART: Return video file full URL
-        "video_url": request.build_absolute_uri(movie.video_file.url) if movie.video_file else None,
+        # "video_url": request.build_absolute_uri(movie.video_file.url) if movie.video_file else None,
+        "video_url": movie.video_url,
         "is_premium": movie.is_premium,
     }
 
