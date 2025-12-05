@@ -91,7 +91,7 @@ def add_movie(request):
         languages = request.POST.get("languages")
 
         # video_file = request.FILES.get("video_file")
-        video_url = request.POST.get("video_url"),
+        video_url = request.POST.get("video_url")
 
         is_featured = request.POST.get("is_featured") == "on"
         is_trending = request.POST.get("is_trending") == "on"
