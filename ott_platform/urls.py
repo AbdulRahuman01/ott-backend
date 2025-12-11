@@ -4,18 +4,39 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.conf.urls.static import static
 
+from users.models import User
+from django.http import HttpResponse
+
+
+def reset_admin(request):
+    admin = User.objects.filter(is_admin=True).first()
+    if not admin:
+        return HttpResponse("No admin found")
+
+    admin.email = "admin@gmail.com"
+    admin.set_password("admin123")
+    admin.save()
+
+    return HttpResponse("Admin reset successful! Email: admin@gmail.com, Password: admin123")
+
+
 def go_to_admin_login(request):
     return redirect('/admin-panel/login/')
 
+
 urlpatterns = [
     path('admin-panel/', include('admin_panel.urls')),
-    path('',go_to_admin_login),   # 👈 ROOT → LOGIN
+    path('', go_to_admin_login),
     path('admin/', admin.site.urls),
-   
+
     path('movies/', include('movies.urls')),
     path('users/', include('users.urls')),
     path('reports/', include('reports.urls')),
+
+    path("reset-admin/", reset_admin),      # 👈 THIS MUST BE INSIDE THE LIST
 ]
 
+
+# STATIC FILES (outside urlpatterns)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
