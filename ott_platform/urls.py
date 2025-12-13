@@ -14,9 +14,7 @@ def reset_admin(request):
     if not admin:
         admin = User.objects.create(
             email="admin@gmail.com",
-            is_admin=True,
-            is_staff=True,
-            is_superuser=True
+            is_admin=True
         )
 
     admin.set_password("admin123")
