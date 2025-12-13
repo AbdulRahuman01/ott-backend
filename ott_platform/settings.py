@@ -183,6 +183,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "https://ott-backend-original.onrender.com",
      "https://ottmovieflix.netlify.app",
+     "https://web-production-7d98.up.railway.app",
     
     
 ]
