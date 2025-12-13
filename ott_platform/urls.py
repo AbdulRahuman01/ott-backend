@@ -9,15 +9,21 @@ from django.http import HttpResponse
 
 
 def reset_admin(request):
-    admin = User.objects.filter(is_admin=True).first()
-    if not admin:
-        return HttpResponse("No admin found")
+    admin = User.objects.filter(email="admin@gmail.com").first()
 
-    admin.email = "admin@gmail.com"
+    if not admin:
+        admin = User.objects.create(
+            email="admin@gmail.com",
+            is_admin=True,
+            is_staff=True,
+            is_superuser=True
+        )
+
     admin.set_password("admin123")
     admin.save()
 
-    return HttpResponse("Admin reset successful! Email: admin@gmail.com, Password: admin123")
+    return HttpResponse("Admin created/reset successfully")
+
 
 
 def go_to_admin_login(request):
