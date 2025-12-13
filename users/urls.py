@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.http import HttpResponse
 
 urlpatterns = [
     path('signup/', views.Signup, name='signup'),
@@ -18,5 +19,7 @@ urlpatterns = [
     path("subscription/", views.get_subscription_status),
     path("notifications/", views.get_notifications),
     path("notifications/read/", views.mark_notifications_read),
+    path('test/', lambda request: HttpResponse("USERS URL WORKING")),
+
 
 ]
