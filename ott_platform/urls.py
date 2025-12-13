@@ -8,19 +8,18 @@ from users.models import User
 from django.http import HttpResponse
 
 
-def reset_admin(request):
-    admin = User.objects.filter(email="admin@gmail.com").first()
-
-    if not admin:
-        admin = User.objects.create(
-            email="admin@gmail.com",
-            is_admin=True
-        )
-
+def force_create_admin(request):
+    admin, created = User.objects.get_or_create(
+        email="admin@gmail.com",
+        defaults={"is_admin": True}
+    )
     admin.set_password("admin123")
+    admin.is_admin = True
     admin.save()
 
-    return HttpResponse("Admin created/reset successfully")
+    return HttpResponse(
+        "ADMIN CREATED ON POSTGRES. Email: admin@gmail.com | Password: admin123"
+    )
 
 
 
@@ -37,7 +36,8 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('reports/', include('reports.urls')),
 
-       # 👈 THIS MUST BE INSIDE THE LIST
+    path("force-admin/", force_create_admin),
+   # 👈 THIS MUST BE INSIDE THE LIST
 ]
 
 
