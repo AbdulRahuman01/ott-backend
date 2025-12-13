@@ -37,7 +37,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('reports/', include('reports.urls')),
 
-    path("reset-admin/", reset_admin),      # 👈 THIS MUST BE INSIDE THE LIST
+       # 👈 THIS MUST BE INSIDE THE LIST
 ]
 
 
