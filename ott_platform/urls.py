@@ -8,19 +8,6 @@ from users.models import User
 from django.http import HttpResponse
 
 
-def force_create_admin(request):
-    admin, created = User.objects.get_or_create(
-        email="admin@gmail.com",
-        defaults={"is_admin": True}
-    )
-    admin.set_password("admin123")
-    admin.is_admin = True
-    admin.save()
-
-    return HttpResponse(
-        "ADMIN CREATED ON POSTGRES. Email: admin@gmail.com | Password: admin123"
-    )
-
 
 
 def go_to_admin_login(request):
@@ -36,7 +23,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('reports/', include('reports.urls')),
 
-    path("force-admin/", force_create_admin),
+    
    # 👈 THIS MUST BE INSIDE THE LIST
 ]
 
