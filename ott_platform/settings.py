@@ -176,7 +176,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
      "https://ottmovieflix.netlify.app",
-     "https://ottmovieflix.vercel.app/",
+     "https://ottmovieflix.vercel.app",
        
 ]
 
@@ -184,7 +184,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "https://ott-backend-original.onrender.com",
     "https://ottmovieflix.netlify.app", 
-    "https://ottmovieflix.vercel.app/",
+    "https://ottmovieflix.vercel.app",
     "https://*.vercel.app",
 ]
 
