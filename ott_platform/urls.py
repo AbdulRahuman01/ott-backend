@@ -14,20 +14,23 @@ from django.http import HttpResponse
 def create_admin(request):
     User = get_user_model()
 
-    # Safety: prevent duplicate admin
-    if User.objects.filter(is_admin=True).exists():
-        return JsonResponse(
-            {"message": "Admin already exists"},
-            status=400
-        )
+    email = os.getenv("ADMIN_EMAIL", "admin@ottflix.com")
+    password = os.getenv("ADMIN_PASSWORD", "Admin@123")
+
+    admin = User.objects.filter(email=email).first()
+
+    if admin:
+        admin.set_password(password)
+        admin.is_admin = True
+        admin.save()
+        return JsonResponse({"message": "Admin password reset successfully"})
 
     User.objects.create_superuser(
-        email=os.getenv("ADMIN_EMAIL", "admin@ottflix.com"),
-        password=os.getenv("ADMIN_PASSWORD", "Admin@123"),
+        email=email,
+        password=password,
     )
 
     return JsonResponse({"message": "Admin created successfully"})
-
 
 def go_to_admin_login(request):
     return redirect('/admin-panel/login/')
